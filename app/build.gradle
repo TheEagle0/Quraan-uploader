@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion 29
@@ -40,7 +40,8 @@ dependencies {
     implementation "io.arrow-kt:arrow-typeclasses:$arrow_version"
     implementation "io.arrow-kt:arrow-extras-data:$arrow_version"
     implementation "io.arrow-kt:arrow-extras-extensions:$arrow_version"
-    kapt    "io.arrow-kt:arrow-meta:$arrow_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "io.arrow-kt:arrow-meta:$arrow_version"
     implementation "android.arch.navigation:navigation-fragment:$nav_version"
     implementation "android.arch.navigation:navigation-ui:$nav_version"
     testImplementation 'junit:junit:4.12'
