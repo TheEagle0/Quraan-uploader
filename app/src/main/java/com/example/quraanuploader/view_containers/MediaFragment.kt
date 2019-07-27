@@ -26,7 +26,6 @@ class MediaFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_media, container, false)
     }
 
@@ -44,7 +43,7 @@ class MediaFragment : Fragment() {
 
     private fun observeMedia() {
         mainViewModel.getMediaList().observe(this, Observer { media ->
-            if (media!=null) {
+            if (media != null) {
                 if (mediaId != null) {
                     val list = media.filter { it.parentId == mediaId }
                     adapter.updateAdapter(list)
