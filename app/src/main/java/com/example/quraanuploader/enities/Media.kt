@@ -21,7 +21,7 @@ data class Media(
         val title: String
     )
 
-    class mediaDeserializer : ResponseDeserializable<Media> {
+    class MediaDeserializer : ResponseDeserializable<Media> {
         override fun deserialize(content: String): Media? =
             Gson().fromJson<Media>(content, object : TypeToken<Media>() {}.type)
     }
