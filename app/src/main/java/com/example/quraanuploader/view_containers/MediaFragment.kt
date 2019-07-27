@@ -19,7 +19,8 @@ class MediaFragment : Fragment() {
     private val mainViewModel by lazy {
         ViewModelProviders.of(activity!!).get(MediaViewModel::class.java)
     }
-private val adaptar by lazy { MediaAdaptar(mutableListOf()) }
+    private val mediaId by lazy { arguments?.getString("id") }
+    private val adapter by lazy { MediaAdaptar(mutableListOf(), this) }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,14 +37,22 @@ private val adaptar by lazy { MediaAdaptar(mutableListOf()) }
 
     private fun setUpList() {
         context?.let {
-            rv.layoutManager=LinearLayoutManager(it)
-            rv.adapter=adaptar
+            rv.layoutManager = LinearLayoutManager(it)
+            rv.adapter = adapter
         }
     }
 
     private fun observeMedia() {
-        mainViewModel.getMediaList().observe(this, Observer {
-            adaptar.updateAdapter(it)
+        mainViewModel.getMediaList().observe(this, Observer { media ->
+            if (media!=null) {
+                if (mediaId != null) {
+                    val list = media.filter { it.parentId == mediaId }
+                    adapter.updateAdapter(list)
+                } else {
+                    val list = media.filter { it.parentId == "main-media" }
+                    adapter.updateAdapter(list)
+                }
+            }
         })
     }
 }
