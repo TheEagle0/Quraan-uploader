@@ -28,6 +28,8 @@ class MediaAdaptar(
         with(holder.itemView) {
             this.itemTitle.text = media.title
             if (media.isList) {
+                itemImageView.setImageResource(R.drawable.ic_playlist)
+                itemImageView.background=resources.getDrawable(R.drawable.circle,null)
                 this.setOnClickListener {
                     findNavController(fragment).navigate(
                         R.id.action_global_mediaFragment,
@@ -35,6 +37,10 @@ class MediaAdaptar(
                             putString("id", media.id)
                         })
                 }
+            }
+            else{
+                itemImageView.setImageResource(R.drawable.ic_audiotrack)
+                itemImageView.background=resources.getDrawable(R.drawable.circle,null)
             }
         }
 
