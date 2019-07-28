@@ -32,6 +32,7 @@ class MediaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setUpList()
         observeMedia()
+        observeLoading()
     }
 
     private fun setUpList() {
@@ -53,5 +54,14 @@ class MediaFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun observeLoading() {
+        mainViewModel.liveLoading.observe(this, Observer {setLoading(it)})
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        if (isLoading) progressBar.visibility=View.VISIBLE
+        else progressBar.visibility=View.INVISIBLE
     }
 }

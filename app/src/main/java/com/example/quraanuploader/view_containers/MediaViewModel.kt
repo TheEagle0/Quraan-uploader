@@ -1,21 +1,24 @@
 package com.example.quraanuploader.view_containers
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
 import com.example.quraanuploader.enities.Media
 import com.example.quraanuploader.managers.ApiManager
 import kotlinx.coroutines.launch
 
-class MediaViewModel : ViewModel() {
+class MediaViewModel(appInstance: Application) : AndroidViewModel(appInstance) {
 
-    private val mediaList = MutableLiveData<List<Media.Data>>()
+    private val liveMediaList = MutableLiveData<List<Media.Data>>()
+    val liveLoading = MutableLiveData<Boolean>()
 
     fun getMediaList(): LiveData<List<Media.Data>> {
-        if (mediaList.value == null) {
-            viewModelScope.launch { mediaList.postValue(ApiManager.getAllMedia()?.data) }
+        if (liveMediaList.value == null) {
+            viewModelScope.launch {
+                liveLoading.postValue(true)
+                liveMediaList.postValue(ApiManager.getAllMedia()?.data)
+                liveLoading.postValue(false)
+            }
         }
-        return mediaList
+        return liveMediaList
     }
 }
