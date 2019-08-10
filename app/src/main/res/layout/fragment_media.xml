@@ -17,7 +17,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="@color/colorPrimary" />
+        app:backgroundTint="@color/colorPrimary"
+        android:id="@+id/add"/>
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progressBar"
