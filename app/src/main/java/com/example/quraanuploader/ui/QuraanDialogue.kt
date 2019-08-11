@@ -66,10 +66,11 @@ fun Fragment.showEditTextDialog(
 class DeletionDialog(private val onClick: () -> Unit) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Delete item")
-        builder.setMessage("Are you sure you want to delete this item you won't be able to get it back!!")
+        builder.setTitle(getString(R.string.delete_item))
+        builder.setMessage(getString(R.string.deletion_message))
         builder.setPositiveButton(
-            "Delete",{ _, _ -> onClick() })
+            getString(R.string.delete)
+        ) { _, _ -> onClick() }
         return builder.create()
     }
 }
