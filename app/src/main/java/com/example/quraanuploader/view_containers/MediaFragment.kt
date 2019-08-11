@@ -9,9 +9,9 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.example.quraanuploader.R
 import com.example.quraanuploader.enities.CreateMedia
+import com.example.quraanuploader.enities.DeleteMedia
 import com.example.quraanuploader.ui.ShowSelectionDialog
 import com.example.quraanuploader.ui.showEditTextDialog
 import kotlinx.android.synthetic.main.fragment_media.*
@@ -20,16 +20,10 @@ import kotlinx.android.synthetic.main.fragment_media.*
  * A simple [Fragment] subclass.
  */
 class MediaFragment : Fragment() {
-    private val mainViewModel by lazy {
-        ViewModelProviders.of(activity!!).get(MediaViewModel::class.java)
-    }
+    private val mainViewModel by lazy { ViewModelProviders.of(activity!!).get(MediaViewModel::class.java) }
     private val mediaId by lazy { arguments?.getString("id") }
-    private val adapter by lazy { MediaAdaptar(mutableListOf(), this) }
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private val adapter by lazy { MediaAdapter(mutableListOf(), this) }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_media, container, false)
     }
 
@@ -110,6 +104,9 @@ class MediaFragment : Fragment() {
                 button.isClickable = !text.isBlank()
             })
         }
+    }
+    fun deleteMedia(deleteMedia: DeleteMedia){
+        mainViewModel.deleteMedia(deleteMedia)
     }
     companion object{
         private const val MAIN_MEDIA_ID="main-media"

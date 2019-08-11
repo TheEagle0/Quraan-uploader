@@ -1,9 +1,7 @@
 package com.example.quraanuploader.managers
 
 import com.example.quraanuploader.data.ApiClient
-import com.example.quraanuploader.enities.CreateMedia
-import com.example.quraanuploader.enities.CreateMediaRsponse
-import com.example.quraanuploader.enities.Media
+import com.example.quraanuploader.enities.*
 import kotlinx.coroutines.Dispatchers
 
 object ApiManager {
@@ -17,5 +15,8 @@ object ApiManager {
 
     suspend fun createListAsync(createMedia: CreateMedia): CreateMediaRsponse? {
         return ApiClient.createList(createMedia, coroutineContext = Dispatchers.Default)
+    }
+    suspend fun deleteMediaAsync(deleteMedia: DeleteMedia):DeleteMediaResponse?{
+        return ApiClient.deleteMedia(deleteMedia,Dispatchers.Default)
     }
 }

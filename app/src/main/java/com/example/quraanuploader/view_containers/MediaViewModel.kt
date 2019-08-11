@@ -1,16 +1,16 @@
 package com.example.quraanuploader.view_containers
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
-import com.example.quraanuploader.enities.CreateMedia
-import com.example.quraanuploader.enities.CreateMediaRsponse
-import com.example.quraanuploader.enities.Media
+import com.example.quraanuploader.app.UploaderApp
+import com.example.quraanuploader.enities.*
 import com.example.quraanuploader.managers.ApiManager
 import kotlinx.coroutines.launch
 
 class MediaViewModel(appInstance: Application) : AndroidViewModel(appInstance) {
-
-    private val liveMediaList = MutableLiveData<List<Media.Data>>()
+private val app = UploaderApp.appInstance
+     val liveMediaList = MutableLiveData<List<Media.Data>>()
     val liveLoading = MutableLiveData<Boolean>()
     private val liveCreateMedia = MutableLiveData<CreateMediaRsponse>()
 
@@ -33,5 +33,12 @@ class MediaViewModel(appInstance: Application) : AndroidViewModel(appInstance) {
                 liveLoading.postValue(false)
             }
         return liveCreateMedia
+    }
+    fun deleteMedia(deleteMedia: DeleteMedia){
+        viewModelScope.launch {
+            liveLoading.postValue(true)
+            ApiManager.deleteMediaAsync(deleteMedia)
+            liveLoading.postValue(false)
+        }
     }
 }

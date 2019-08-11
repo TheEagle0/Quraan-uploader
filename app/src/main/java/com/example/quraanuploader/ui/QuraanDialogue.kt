@@ -44,7 +44,10 @@ class ShowSelectionDialog : DialogFragment() {
 
 }
 
-fun Fragment.showEditTextDialog(onDoneClick: (String) -> Unit, onTextChanges: (String, AppCompatButton) -> Unit): AlertDialog? {
+fun Fragment.showEditTextDialog(
+    onDoneClick: (String) -> Unit,
+    onTextChanges: (String, AppCompatButton) -> Unit
+): AlertDialog? {
     return context?.let {
         val dialogBuilder = AlertDialog.Builder(it)
         dialogBuilder.setView(R.layout.edit_text_dialog)
@@ -57,5 +60,16 @@ fun Fragment.showEditTextDialog(onDoneClick: (String) -> Unit, onTextChanges: (S
             .subscribe { text -> onTextChanges(text, doneButton) }
         dialogBuilder.setOnDismissListener { disposable.dispose() }
         return dialog
+    }
+}
+
+class DeletionDialog(private val onClick: () -> Unit) : DialogFragment() {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(context!!)
+        builder.setTitle("Delete item")
+        builder.setMessage("Are you sure you want to delete this item you won't be able to get it back!!")
+        builder.setPositiveButton(
+            "Delete",{ _, _ -> onClick() })
+        return builder.create()
     }
 }
