@@ -14,6 +14,7 @@ import com.example.quraanuploader.enities.CreateMedia
 import com.example.quraanuploader.enities.DeleteMedia
 import com.example.quraanuploader.ui.ShowSelectionDialog
 import com.example.quraanuploader.ui.showEditTextDialog
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_media.*
 
 /**
@@ -67,7 +68,7 @@ class MediaFragment : Fragment() {
     private fun observeCreateMedia(createMedia: CreateMedia) {
         mainViewModel.createList(createMedia).observe(this, Observer {
             if (it.data.id != null) {
-                Toast.makeText(context, "Directory created", Toast.LENGTH_SHORT).show()
+                Toasty.success(context!!, "Directory created", Toast.LENGTH_SHORT).show()
             }
         })
     }

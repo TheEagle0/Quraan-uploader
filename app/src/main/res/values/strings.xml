@@ -11,4 +11,6 @@
     <string name="delete_item">Delete item</string>
     <string name="deletion_message">Are you sure you want to delete this item you won\'t be able to get it back!!</string>
     <string name="delete">Delete</string>
+    <string name="file_deleted">File Deleted</string>
+    <string name="file_not_deleted">Some or all data hasn\'t been removed please check your database</string>
 </resources>

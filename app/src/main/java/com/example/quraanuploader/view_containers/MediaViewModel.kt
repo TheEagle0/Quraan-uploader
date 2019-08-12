@@ -3,14 +3,16 @@ package com.example.quraanuploader.view_containers
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.*
+import com.example.quraanuploader.R
 import com.example.quraanuploader.app.UploaderApp
 import com.example.quraanuploader.enities.*
 import com.example.quraanuploader.managers.ApiManager
+import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
 
 class MediaViewModel(appInstance: Application) : AndroidViewModel(appInstance) {
-private val app = UploaderApp.appInstance
-     val liveMediaList = MutableLiveData<List<Media.Data>>()
+    private val app = UploaderApp.appInstance
+    val liveMediaList = MutableLiveData<List<Media.Data>>()
     val liveLoading = MutableLiveData<Boolean>()
     private val liveCreateMedia = MutableLiveData<CreateMediaRsponse>()
 
@@ -34,11 +36,17 @@ private val app = UploaderApp.appInstance
             }
         return liveCreateMedia
     }
-    fun deleteMedia(deleteMedia: DeleteMedia){
+
+    fun deleteMedia(deleteMedia: DeleteMedia) {
         viewModelScope.launch {
             liveLoading.postValue(true)
-            ApiManager.deleteMediaAsync(deleteMedia)
+            ApiManager.deleteMediaAsync(deleteMedia)?.apply {
+                if (this.data.none { !it })
+                    Toasty.success(app, app.getString(R.string.file_deleted), Toast.LENGTH_SHORT).show()
+                else Toasty.error(app, app.getString(R.string.file_not_deleted)).show()
+            }
             liveLoading.postValue(false)
+            
         }
     }
 }
