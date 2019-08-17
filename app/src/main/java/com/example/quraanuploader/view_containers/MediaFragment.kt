@@ -2,7 +2,6 @@ package com.example.quraanuploader.view_containers
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
-import android.content.ContentResolver
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -22,18 +21,12 @@ import com.example.quraanuploader.ui.showEditTextDialog
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_media.*
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.quraanuploader.enities.UploadFile
-import com.vincent.filepicker.Constant
-import com.vincent.filepicker.Constant.*
-import com.vincent.filepicker.activity.AudioPickActivity
-import com.vincent.filepicker.activity.AudioPickActivity.IS_NEED_RECORDER
-import com.vincent.filepicker.filter.entity.AudioFile
-import java.io.File
+import com.example.quraanuploader.util.MediaNameRetriever
 
 
 /**
@@ -60,7 +53,6 @@ class MediaFragment : Fragment() {
         observeLoading()
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -77,15 +69,21 @@ class MediaFragment : Fragment() {
 //                        )
 //                    }
 //                    Log.d("files", list.toString())
-                    val uri = data?.data
-                    Log.d("uri", uri?.path.toString())
-                    val uploadFile = UploadFile(mediaId!!, uri?.authority!!)
-                    val inputStream = context?.contentResolver?.openInputStream(uri)
-                    mainViewModel.uploadMedia(uploadFile, inputStream!!, context!!)
+                    uploadMedia(data)
 
                 }
             }
         }
+    }
+
+    private fun uploadMedia(data: Intent?) {
+        val uri = data?.data
+        Log.d("uri", uri?.path.toString())
+        val uploadFile =
+            UploadFile(mediaId!!, MediaNameRetriever.getMediaNameFromUri(uri!!, context)!!)
+        val inputStream = context?.contentResolver?.openInputStream(uri)
+        mainViewModel.uploadMedia(uploadFile, inputStream!!, context!!)
+        observeMedia()
     }
 
     override fun onRequestPermissionsResult(

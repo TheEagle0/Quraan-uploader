@@ -2,8 +2,6 @@ package com.example.quraanuploader.data
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.quraanuploader.enities.*
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FileDataPart
@@ -54,7 +52,6 @@ object ApiClient : ApiEndPoints {
                 .fold({ it }, { null })
         }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override suspend fun upploadMedia(
         uploadFile: UploadFile,
         file: InputStream,

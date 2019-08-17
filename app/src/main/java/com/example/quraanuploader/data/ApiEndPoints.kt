@@ -16,5 +16,5 @@ interface ApiEndPoints {
     suspend fun getMediaList(coroutineContext: CoroutineContext): Media?
     suspend fun createList(createMedia: CreateMedia,coroutineContext: CoroutineContext):CreateMediaRsponse?
     suspend fun deleteMedia(deleteMedia: DeleteMedia,coroutineContext: CoroutineContext):DeleteMediaResponse?
-    suspend fun upploadMedia(uploadFile: UploadFile, file:InputStream, contex: Context, coroutineContext: CoroutineContext):UploadMediaResponse?
+    suspend fun upploadMedia(uploadFile: UploadFile, file:InputStream, context: Context, coroutineContext: CoroutineContext):UploadMediaResponse?
 }
