@@ -1,14 +1,21 @@
 package com.example.quraanuploader.view_containers
 
 import android.app.Application
+import android.content.Context
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.example.quraanuploader.R
 import com.example.quraanuploader.app.UploaderApp
 import com.example.quraanuploader.enities.*
 import com.example.quraanuploader.managers.ApiManager
+import com.github.kittinunf.fuel.core.FileDataPart
+import com.vincent.filepicker.filter.entity.AudioFile
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.InputStream
 
 class MediaViewModel(appInstance: Application) : AndroidViewModel(appInstance) {
     private val app = UploaderApp.appInstance
@@ -47,6 +54,17 @@ class MediaViewModel(appInstance: Application) : AndroidViewModel(appInstance) {
             }
             liveLoading.postValue(false)
             
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun uploadMedia(uploadFile: UploadFile, file:InputStream,context: Context){
+        viewModelScope.launch {
+            liveLoading.postValue(true)
+            ApiManager.uploadMediaAsync(uploadFile,file,context).apply {
+                if (this?.data?.title!=null)
+                    Toasty.success(app,"File Uploaded successfully")
+            }
+            liveLoading.postValue(false)
         }
     }
 }
