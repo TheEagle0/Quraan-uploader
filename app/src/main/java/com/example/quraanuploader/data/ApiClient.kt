@@ -2,6 +2,7 @@ package com.example.quraanuploader.data
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.example.quraanuploader.enities.*
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FileDataPart
@@ -10,6 +11,7 @@ import com.github.kittinunf.fuel.core.awaitResult
 import com.github.kittinunf.fuel.core.requests.upload
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.util.encodeBase64ToString
 import com.google.gson.Gson
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -68,7 +70,7 @@ object ApiClient : ApiEndPoints {
             ).upload()
                 .add(FileDataPart.from("${context.dataDir.absolutePath}/${uploadFile.title}", name = uploadFile.title))
                 .add(InlineDataPart(uploadFile.id, "parent_id"))
-                .add(InlineDataPart(uploadFile.title, "title"))
-                .awaitResult(UploadMediaResponse.MediaDeserializer()).fold({it},{null})
+                .add(InlineDataPart(uploadFile.title.encodeBase64ToString(), "title"))
+                .awaitResult(UploadMediaResponse.MediaDeserializer()).fold({ Log.d("response",it.toString());it},{null})
         }
 }

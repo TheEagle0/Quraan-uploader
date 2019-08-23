@@ -21,10 +21,8 @@ import com.example.quraanuploader.ui.showEditTextDialog
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_media.*
 import android.content.Intent
-import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.example.quraanuploader.enities.UploadFile
 import com.example.quraanuploader.util.MediaNameRetriever
 
@@ -70,7 +68,6 @@ class MediaFragment : Fragment() {
 //                    }
 //                    Log.d("files", list.toString())
                     uploadMedia(data)
-
                 }
             }
         }
@@ -79,10 +76,24 @@ class MediaFragment : Fragment() {
     private fun uploadMedia(data: Intent?) {
         val uri = data?.data
         Log.d("uri", uri?.path.toString())
-        val uploadFile =
-            UploadFile(mediaId!!, MediaNameRetriever.getMediaNameFromUri(uri!!, context)!!)
-        val inputStream = context?.contentResolver?.openInputStream(uri)
-        mainViewModel.uploadMedia(uploadFile, inputStream!!, context!!)
+        val inputStream = context?.contentResolver?.openInputStream(uri!!)
+
+        showEditTextDialog("", {
+            val uploadFile = if (mediaId != null) UploadFile(
+                mediaId!!,
+                it
+            )
+            else UploadFile(
+                MAIN_MEDIA_ID,
+                it
+            )
+            mainViewModel.uploadMedia(uploadFile, inputStream!!, context!!)
+
+        }, { text, button ->
+            button.isClickable = !text.isBlank()
+
+        })
+
         observeMedia()
     }
 
@@ -165,7 +176,7 @@ class MediaFragment : Fragment() {
     }
 
     private fun showDialog() {
-        this.showEditTextDialog({
+        this.showEditTextDialog("", {
             if (mediaId != null) {
                 val createMedia = CreateMedia(it, mediaId!!)
                 observeCreateMedia(createMedia)
@@ -200,6 +211,7 @@ class MediaFragment : Fragment() {
 
     fun deleteMedia(deleteMedia: DeleteMedia) {
         mainViewModel.deleteMedia(deleteMedia)
+        observeMedia()
     }
 
     private fun acquireStoragePermission() {

@@ -44,7 +44,7 @@ class ShowSelectionDialog : DialogFragment() {
 
 }
 
-fun Fragment.showEditTextDialog(
+fun Fragment.showEditTextDialog(hint:String,
     onDoneClick: (String) -> Unit,
     onTextChanges: (String, AppCompatButton) -> Unit
 ): AlertDialog? {
@@ -53,6 +53,7 @@ fun Fragment.showEditTextDialog(
         dialogBuilder.setView(R.layout.edit_text_dialog)
         val dialog = dialogBuilder.show()
         val textView = dialog.findViewById<AppCompatEditText>(R.id.title)!!
+        textView.setText(hint)
         with(textView) { setSelection(text!!.length);requestFocus() }
         val doneButton = dialog.findViewById<AppCompatButton>(R.id.done)!!
         doneButton.setOnClickListener { textView.clearFocus();dialog.dismiss();onDoneClick("${textView.text}") }

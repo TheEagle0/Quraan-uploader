@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken
 
 data class UploadMediaResponse(
     @SerializedName("data")
-    val `data`: Data
+    val data: Data?
 ) {
     data class Data(
         @SerializedName("id")

@@ -10,27 +10,22 @@ import com.example.quraanuploader.R
 import com.example.quraanuploader.app.UploaderApp
 import com.example.quraanuploader.enities.*
 import com.example.quraanuploader.managers.ApiManager
-import com.github.kittinunf.fuel.core.FileDataPart
-import com.vincent.filepicker.filter.entity.AudioFile
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.launch
-import java.io.File
 import java.io.InputStream
 
 class MediaViewModel(appInstance: Application) : AndroidViewModel(appInstance) {
     private val app = UploaderApp.appInstance
-    val liveMediaList = MutableLiveData<List<Media.Data>>()
+    private val liveMediaList = MutableLiveData<List<Media.Data>>()
     val liveLoading = MutableLiveData<Boolean>()
     private val liveCreateMedia = MutableLiveData<CreateMediaRsponse>()
 
     fun getMediaList(): LiveData<List<Media.Data>> {
-        if (liveMediaList.value == null) {
             viewModelScope.launch {
                 liveLoading.postValue(true)
                 liveMediaList.postValue(ApiManager.getAllMedia()?.data)
                 liveLoading.postValue(false)
             }
-        }
         return liveMediaList
     }
 
@@ -56,13 +51,12 @@ class MediaViewModel(appInstance: Application) : AndroidViewModel(appInstance) {
             
         }
     }
-    @RequiresApi(Build.VERSION_CODES.N)
     fun uploadMedia(uploadFile: UploadFile, file:InputStream,context: Context){
         viewModelScope.launch {
             liveLoading.postValue(true)
-            ApiManager.uploadMediaAsync(uploadFile,file,context).apply {
-                if (this?.data?.title!=null)
-                    Toasty.success(app,"File Uploaded successfully")
+            ApiManager.uploadMediaAsync(uploadFile,file,context)?.apply {
+                if (this.data?.id!=null)
+                    Toasty.success(app,"File Uploaded successfully",Toast.LENGTH_SHORT).show()
             }
             liveLoading.postValue(false)
         }

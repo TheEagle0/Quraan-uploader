@@ -1,14 +1,11 @@
 package com.example.quraanuploader.managers
 
-import android.app.Application
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.quraanuploader.data.ApiClient
 import com.example.quraanuploader.enities.*
-import com.vincent.filepicker.filter.entity.AudioFile
 import kotlinx.coroutines.Dispatchers
-import java.io.File
 import java.io.InputStream
 
 object ApiManager {
@@ -30,6 +27,6 @@ object ApiManager {
 
     @RequiresApi(Build.VERSION_CODES.N)
     suspend fun uploadMediaAsync(uploadFile: UploadFile, file: InputStream, context: Context) :UploadMediaResponse?{
-        return ApiClient.upploadMedia(uploadFile,file,context, Dispatchers.Default)
+        return ApiClient.upploadMedia(uploadFile,file,context,Dispatchers.Default)
     }
 }
