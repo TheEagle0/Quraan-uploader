@@ -78,7 +78,7 @@ class MediaFragment : Fragment() {
         Log.d("uri", uri?.path.toString())
         val inputStream = context?.contentResolver?.openInputStream(uri!!)
 
-        showEditTextDialog("", {
+        showEditTextDialog(MediaNameRetriever.getMediaNameFromUri(uri!!,context)!!, {
             val uploadFile = if (mediaId != null) UploadFile(
                 mediaId!!,
                 it
