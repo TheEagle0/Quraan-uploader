@@ -211,6 +211,7 @@ class MediaFragment : Fragment() {
 
     fun deleteMedia(deleteMedia: DeleteMedia) {
         mainViewModel.deleteMedia(deleteMedia)
+        mainViewModel.liveMediaList.postValue(null)
         observeMedia()
     }
 
