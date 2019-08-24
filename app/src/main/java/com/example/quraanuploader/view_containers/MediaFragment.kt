@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.quraanuploader.R
 import com.example.quraanuploader.enities.CreateMedia
@@ -23,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_media.*
 import android.content.Intent
 import android.provider.MediaStore
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider
 import com.example.quraanuploader.enities.UploadFile
 import com.example.quraanuploader.util.MediaNameRetriever
 
@@ -31,9 +31,7 @@ import com.example.quraanuploader.util.MediaNameRetriever
  * A simple [Fragment] subclass.
  */
 class MediaFragment : Fragment() {
-    private val mainViewModel by lazy {
-        ViewModelProviders.of(activity!!).get(MediaViewModel::class.java)
-    }
+    private val mainViewModel by lazy {ViewModelProvider.AndroidViewModelFactory.getInstance(activity!!.application).create(MediaViewModel::class.java) }
     private val mediaId by lazy { arguments?.getString("id") }
     private val adapter by lazy { MediaAdapter(mutableListOf(), this) }
     override fun onCreateView(
